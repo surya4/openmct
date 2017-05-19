@@ -96,9 +96,10 @@ define([
                 },
                 legend: {
                     position: 'top',
-                    expandByDefault: true,
+                    expandByDefault: false,
                     valueToShowWhenCollapsed: 'nearestValue',
-                    valuesToShowWhenExpanded: ['nearestTimestamp', 'nearestValue', 'min', 'max']
+                    valuesToShowWhenExpanded: ['nearestTimestamp', 'nearestValue', 'min', 'max'],
+                    niceValuesToShowWhenExpanded: { none: 'None', nearestTimestamp: 'Timestamp', nearestValue: 'Value', min: 'Min', max: 'Max'}
                 }
             };
         },

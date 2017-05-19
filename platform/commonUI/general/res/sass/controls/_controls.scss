@@ -153,10 +153,9 @@
 // Moved this over from a tree-only context 5/18/17
 
 .view-control {
-    @include test();
+    @extend .ui-symbol;
     cursor: pointer;
-    height: 100%;
-    width: 1em;
+    height: 1em; width: 1em;
     line-height: inherit;
     &:before {
         position: absolute;

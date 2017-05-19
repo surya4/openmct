@@ -149,10 +149,10 @@ define([
                 return 'Need range';
             }
             if (!range.min) {
-                return 'Must specify min';
+                return 'Must specify Minimum';
             }
             if (!range.max) {
-                return 'Must specify max';
+                return 'Must specify Maximum';
             }
             if (_.isNaN(Number(range.min))) {
                 return 'Minimum must be a number.';
@@ -161,7 +161,7 @@ define([
                 return 'Maximum must be a number.';
             }
             if (Number(range.min) > Number(range.max)) {
-                return 'Minimum must be less than maximum.';
+                return 'Minimum must be less than Maximum.';
             }
             if (config.yAxis.get('autoscale')) {
                 return false;
@@ -173,6 +173,7 @@ define([
         this.linkFields(config.legend, 'expandByDefault', 'form.legend.expandByDefault', Boolean, undefined, 'configuration.legend.expandByDefault');
         this.linkFields(config.legend, 'valueToShowWhenCollapsed', 'form.legend.valueToShowWhenCollapsed', undefined, undefined, 'configuration.legend.valueToShowWhenCollapsed');
         this.linkFields(config.legend, 'valuesToShowWhenExpanded', 'form.legend.valuesToShowWhenExpanded', undefined, undefined, 'configuration.legend.valuesToShowWhenExpanded');
+        this.linkFields(config.legend, 'niceValuesToShowWhenExpanded', 'form.legend.niceValuesToShowWhenExpanded', undefined, undefined, 'configuration.legend.niceValuesToShowWhenExpanded');
     };
 
     PlotOptionsController.prototype.addSeries = function (series, index) {
