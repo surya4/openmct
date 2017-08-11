@@ -48,9 +48,8 @@ define(
             this.zone = "";
             this.imageUrl = "";
             this.requestCount = 0;
-            this.scrollable = $(element[0]);
+            this.scrollable = $(".l-image-thumbs-wrapper");
             this.autoScroll = openmct.time.clock() ? true : false;
-
             this.$scope.imageHistory = [];
             this.$scope.filters = {
                 brightness: 100,
@@ -63,6 +62,7 @@ define(
             this.updateHistory = this.updateHistory.bind(this);
             this.onBoundsChange = this.onBoundsChange.bind(this);
             this.onScroll = this.onScroll.bind(this);
+            this.setSelectedImage = this.setSelectedImage.bind(this);
 
             this.subscribe(this.$scope.domainObject);
 
@@ -161,7 +161,7 @@ define(
 
         /**
          * Updates displayable values to match those of the most
-         * recently recieved datum.
+         * recently received datum.
          * @param {object} [datum] the datum
          * @private
          */
@@ -170,7 +170,7 @@ define(
                 this.nextDatum = datum;
                 return;
             }
-
+            
             this.time = this.timeFormat.format(datum);
             this.imageUrl = this.imageFormat.format(datum);
 
@@ -196,8 +196,12 @@ define(
 
         ImageryController.prototype.onScroll = function (event) {
             this.$window.requestAnimationFrame(function () {
+                var thumbnailHeight = this.scrollable[0].children[0].offsetHeight;
+                var thumbnailWidth = this.scrollable[0].children[0].offsetWidth;
                 if (this.scrollable[0].scrollLeft <
-                    (this.scrollable[0].scrollWidth - this.scrollable[0].clientWidth) - 20) {
+                    (this.scrollable[0].scrollWidth - this.scrollable[0].clientWidth) - thumbnailWidth ||
+                    this.scrollable[0].scrollTop <
+                    (this.scrollable[0].scrollHeight - this.scrollable[0].clientHeight) - thumbnailHeight) {
                     this.autoScroll = false;
                 } else {
                     this.autoScroll = true;
@@ -210,6 +214,13 @@ define(
                 this.scrollable[0].scrollLeft = this.scrollable[0].scrollWidth;
             }
         };
+
+        ImageryController.prototype.scrollToBottom = function () {
+            if (this.autoScroll) {
+                this.scrollable[0].scrollTop = this.scrollable[0].scrollHeight;
+            }
+        };
+
 
         /**
          * Get the time portion (hours, minutes, seconds) of the
@@ -244,14 +255,30 @@ define(
          */
         ImageryController.prototype.paused = function (state) {
                 if (arguments.length > 0 && state !== this.isPaused) {
+                    this.unselectAllImages(this.$scope);
                     this.isPaused = state;
                     if (this.nextDatum) {
                         this.updateValues(this.nextDatum);
                         delete this.nextDatum;
                     }
+                    this.autoScroll = true;
                 }
                 return this.isPaused;
-            };
+        };
+
+        ImageryController.prototype.setSelectedImage = function (image) {
+            this.imageUrl = image.url;
+            this.time = this.timeFormat.format(image.utc);
+            this.paused(true);
+            this.unselectAllImages(this.$scope);
+            image.selected = true;
+        };
+
+        ImageryController.prototype.unselectAllImages = function ($scope) {
+            for(var i = 0; i < $scope.imageHistory.length; i++){
+                this.$scope.imageHistory[i].selected = false;
+            }
+        }
 
         return ImageryController;
     }

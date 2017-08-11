@@ -93,13 +93,21 @@ define(
          * @memberof platform/commonUI/general
          * @constructor
          */
-        function MCTSplitPane($parse, $log, $interval) {
+        function MCTSplitPane($parse, $log, $interval, $window) {
             function controller($scope, $element, $attrs) {
                 var anchorKey = $attrs.anchor || DEFAULT_ANCHOR,
+                    positionParsed = $parse($attrs.position),
                     anchor,
                     activeInterval,
-                    positionParsed = $parse($attrs.position),
-                    position; // Start undefined, until explicitly set
+                    position,
+                    splitterSize,
+
+                    alias = $attrs.alias !== undefined ?
+                      "mctSplitPane-" + $attrs.alias : undefined,
+
+                    //convert string to number from localStorage
+                    userWidthPreference = $window.localStorage.getItem(alias) === null ?
+                      undefined : Number($window.localStorage.getItem(alias));
 
                 // Get relevant size (height or width) of DOM element
                 function getSize(domElement) {
@@ -109,16 +117,20 @@ define(
 
                 // Apply styles to child elements
                 function updateChildren(children) {
+                    if (alias) {
+                        position = userWidthPreference || position;
+                    }
+
                     // Pick out correct elements to update, flowing from
                     // selected anchor edge.
                     var first = children.eq(anchor.reversed ? 2 : 0),
                         splitter = children.eq(1),
                         last = children.eq(anchor.reversed ? 0 : 2),
-                        splitterSize = getSize(splitter[0]),
                         firstSize;
 
+                    splitterSize = getSize(splitter[0]);
                     first.css(anchor.edge, "0px");
-                    first.css(anchor.dimension, (position - splitterSize) + 'px');
+                    first.css(anchor.dimension, position + 'px');
 
                     // Get actual size (to obey min-width etc.)
                     firstSize = getSize(first[0]);
@@ -126,10 +138,9 @@ define(
                     splitter.css(anchor.edge, firstSize + 'px');
                     splitter.css(anchor.opposite, "auto");
 
-                    last.css(anchor.edge, (firstSize + splitterSize) + 'px');
-                    last.css(anchor.opposite, "0px");
-
-                    position = firstSize + splitterSize;
+                    last.css(anchor.edge, firstSize + splitterSize + 'px');
+                    last.css(anchor.opposite, '0px');
+                    position = firstSize;
                 }
 
                 // Update positioning of contained elements
@@ -166,7 +177,18 @@ define(
                             positionParsed.assign($scope, position);
                         }
                     }
+
                     return position;
+                }
+
+                function setUserWidthPreference(value) {
+                    userWidthPreference = value;
+                }
+
+                function persistToLocalStorage(value) {
+                    if (alias) {
+                        $window.localStorage.setItem(alias, value);
+                    }
                 }
 
                 // Dynamically apply a CSS class to elements when the user
@@ -196,18 +218,31 @@ define(
                 activeInterval = $interval(function () {
                     getSetPosition(getSetPosition());
                 }, POLLING_INTERVAL, 0, false);
-
                 // ...and stop polling when we're destroyed.
                 $scope.$on('$destroy', function () {
                     $interval.cancel(activeInterval);
                 });
 
+
                 // Interface exposed by controller, for mct-splitter to user
                 return {
-                    position: getSetPosition,
-                    toggleClass: toggleClass,
                     anchor: function () {
                         return anchor;
+                    },
+                    position: function (newPosition) {
+                        if (arguments.length === 0) {
+                            return getSetPosition();
+                        }
+
+                        setUserWidthPreference(newPosition);
+                        return getSetPosition(newPosition);
+                    },
+                    startResizing: function () {
+                        toggleClass('resizing');
+                    },
+                    endResizing: function (finalPosition) {
+                        persistToLocalStorage(finalPosition);
+                        toggleClass('resizing');
                     }
                 };
             }
@@ -219,9 +254,7 @@ define(
                 controller: ['$scope', '$element', '$attrs', controller]
             };
         }
-
         return MCTSplitPane;
 
     }
 );
-
