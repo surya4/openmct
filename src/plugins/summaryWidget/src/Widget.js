@@ -191,7 +191,7 @@ define([
         this.applyStyle($('#widget', this.domElement), activeRule.getProperty('style'));
         $('#widget', this.domElement).prop('title', activeRule.getProperty('message'));
         $('#widgetLabel', this.domElement).html(activeRule.getProperty('label'));
-        $('#widgetIcon', this.domElement).removeClass().addClass(activeRule.getProperty('icon'));
+        $('#widgetLabel', this.domElement).removeClass().addClass('label ' + activeRule.getProperty('icon'));
     };
 
     Widget.prototype.getConfigProp = function (path) {
