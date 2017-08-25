@@ -80,12 +80,12 @@
 
     > .holder {
         @extend .flex-elem;
-        //@include test();
     }
 
     .widget-holder {
         height: 100px;
-        .s-summary-widget {
+        .l-summary-widget {
+            // Position the widget centered in the edit space
             display: inline-block;
             position: absolute;
             top: 50%; left: 50%;
