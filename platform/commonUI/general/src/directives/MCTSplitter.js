@@ -49,12 +49,12 @@ define(
                         initialPosition = mctSplitPane.position();
                     },
                     // Handle user changes to splitter position
-                    move: function (delta) { 
+                    move: function (delta) {
                         var anchor = mctSplitPane.anchor(),
                             index = anchor.orientation === "vertical" ? 0 : 1,
                             pixelDelta = delta[index] *
                                 (anchor.reversed ? -1 : 1);
-                        
+
                         // Update the position of this splitter
                         newPosition =  initialPosition + pixelDelta;
 

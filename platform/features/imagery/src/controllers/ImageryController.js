@@ -170,7 +170,6 @@ define(
                 this.nextDatum = datum;
                 return;
             }
-            
             this.time = this.timeFormat.format(datum);
             this.imageUrl = this.imageFormat.format(datum);
 
@@ -196,12 +195,12 @@ define(
 
         ImageryController.prototype.onScroll = function (event) {
             this.$window.requestAnimationFrame(function () {
-                var thumbnailHeight = this.scrollable[0].children[0].offsetHeight;
-                var thumbnailWidth = this.scrollable[0].children[0].offsetWidth;
+                var thumbnailWrapperHeight = this.scrollable[0].offsetHeight;
+                var thumbnailWrapperWidth = this.scrollable[0].offsetWidth;
                 if (this.scrollable[0].scrollLeft <
-                    (this.scrollable[0].scrollWidth - this.scrollable[0].clientWidth) - thumbnailWidth ||
+                    (this.scrollable[0].scrollWidth - this.scrollable[0].clientWidth) - (thumbnailWrapperWidth) ||
                     this.scrollable[0].scrollTop <
-                    (this.scrollable[0].scrollHeight - this.scrollable[0].clientHeight) - thumbnailHeight) {
+                    (this.scrollable[0].scrollHeight - this.scrollable[0].clientHeight) - (thumbnailWrapperHeight)) {
                     this.autoScroll = false;
                 } else {
                     this.autoScroll = true;
@@ -209,12 +208,18 @@ define(
             }.bind(this));
         };
 
+        /**
+         *  Force scroll history imagery div to scroll to right.
+         */
         ImageryController.prototype.scrollToRight = function () {
             if (this.autoScroll) {
                 this.scrollable[0].scrollLeft = this.scrollable[0].scrollWidth;
             }
         };
 
+        /**
+         *  Force history imagery div to scroll to bottom.
+         */
         ImageryController.prototype.scrollToBottom = function () {
             if (this.autoScroll) {
                 this.scrollable[0].scrollTop = this.scrollable[0].scrollHeight;
@@ -254,32 +259,38 @@ define(
          * @returns {boolean} the current state
          */
         ImageryController.prototype.paused = function (state) {
-                if (arguments.length > 0 && state !== this.isPaused) {
-                    this.unselectAllImages(this.$scope);
-                    this.isPaused = state;
-                    if (this.nextDatum) {
-                        this.updateValues(this.nextDatum);
-                        delete this.nextDatum;
-                    }
-                    this.autoScroll = true;
+            if (arguments.length > 0 && state !== this.isPaused) {
+                this.unselectAllImages();
+                this.isPaused = state;
+                if (this.nextDatum) {
+                    this.updateValues(this.nextDatum);
+                    delete this.nextDatum;
                 }
-                return this.isPaused;
+                this.autoScroll = true;
+            }
+            return this.isPaused;
         };
 
+        /**
+         * Set the selected image on the state for the large imagery div to use.
+         * @param {object} [image] the image object to get url from.
+         */
         ImageryController.prototype.setSelectedImage = function (image) {
             this.imageUrl = image.url;
             this.time = this.timeFormat.format(image.utc);
             this.paused(true);
-            this.unselectAllImages(this.$scope);
+            this.unselectAllImages();
             image.selected = true;
         };
 
-        ImageryController.prototype.unselectAllImages = function ($scope) {
-            for(var i = 0; i < $scope.imageHistory.length; i++){
+        /**
+         * Loop through the history imagery data to set all images to unselected. 
+         */
+        ImageryController.prototype.unselectAllImages = function () {
+            for (var i = 0; i < this.$scope.imageHistory.length; i++) {
                 this.$scope.imageHistory[i].selected = false;
             }
-        }
-
+        };
         return ImageryController;
     }
 );
