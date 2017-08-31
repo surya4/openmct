@@ -133,7 +133,7 @@ define(
                     // Get actual size (to obey min-width etc.)
                     firstSize = getSize(first[0]);
 
-                    if (alias === 'mctSplitPane-imagery'){
+                    if (alias === 'mctSplitPane-imagery') {
                         firstSize = firstSize - 5;
                     }
 
@@ -185,7 +185,7 @@ define(
                 }
 
                 function setUserWidthPreference(value) {
-                    if(alias) {
+                    if (alias) {
                         userWidthPreference = value;
                     }
                 }
