@@ -284,7 +284,7 @@ define(
         };
 
         /**
-         * Loop through the history imagery data to set all images to unselected. 
+         * Loop through the history imagery data to set all images to unselected.
          */
         ImageryController.prototype.unselectAllImages = function () {
             for (var i = 0; i < this.$scope.imageHistory.length; i++) {
