@@ -25,14 +25,12 @@ define([
     "./src/controllers/ImageryController",
     "./src/directives/MCTBackgroundImage",
     "text!./res/templates/imagery.html",
-    "text!./res/templates/imageryTimeline.html",
     'legacyRegistry'
 ], function (
     ImageryViewPolicy,
     ImageryController,
     MCTBackgroundImage,
     imageryTemplate,
-    imageryTimelineTemplate,
     legacyRegistry
 ) {
 
