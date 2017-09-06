@@ -50,17 +50,6 @@ define([
                         "telemetry"
                     ],
                     "editable": false
-                },
-                {
-                    "name": "Historical Imagery",
-                    "key": "historical-imagery",
-                    "cssClass": "icon-image",
-                    "template": imageryTimelineTemplate,
-                    "priority": "preferred",
-                    "needs": [
-                        "telemetry"
-                    ],
-                    "editable": false
                 }
             ],
             "policies": [
