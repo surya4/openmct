@@ -80,10 +80,10 @@ define(
                     var metadata = this.openmct
                         .telemetry
                         .getMetadata(this.domainObject);
-                    var timeKey = this.openmct.time.timeSystem().key;
+                    this.timeKey = this.openmct.time.timeSystem().key;
                     this.timeFormat = this.openmct
                         .telemetry
-                        .getValueFormatter(metadata.value(timeKey));
+                        .getValueFormatter(metadata.value(this.timeKey));
                     this.imageFormat = this.openmct
                         .telemetry
                         .getValueFormatter(metadata.valuesForHints(['image'])[0]);
@@ -184,8 +184,7 @@ define(
         ImageryController.prototype.updateHistory = function (datum) {
             if (this.$scope.imageHistory.length === 0 ||
                 !_.isEqual(this.$scope.imageHistory.slice(-1)[0], datum)) {
-
-                var index = _.sortedIndex(this.$scope.imageHistory, datum, this.timeFormat.formatter.key);
+                var index = _.sortedIndex(this.$scope.imageHistory, datum, this.timeKey);
                 this.$scope.imageHistory.splice(index, 0, datum);
                 return true;
             }

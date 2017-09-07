@@ -244,7 +244,7 @@ define(
 
                     it("updates larger image url and time", function () {
                         controller.setSelectedImage(mockDatum);
-                        expect(controller.getImageUrl()).toEqual(mockDatum.url);
+                        expect(controller.getImageUrl()).toEqual(controller.getImageUrl(mockDatum));
                         expect(controller.getTime()).toEqual(controller.timeFormat.format(mockDatum.utc));
                     });
                 });
