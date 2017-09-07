@@ -63,7 +63,7 @@ define(
 				mockCurrentTarget.innerHTML = "New name";
 				controller.updateName(mockEvent);
 
-				expect(mockCapability.mutate).toHaveBeenCalledWith(jasmine.any(Function));
+				expect(mockCapability.mutate).toHaveBeenCalled();
 			});
 
 			it("updates the model with a default for blank names", function () {
@@ -83,24 +83,24 @@ define(
 				expect(mockCapability.mutate).not.toHaveBeenCalled();
 			});
 
-			// it("updates the model on enter keypress event only", function () {
-			// 	mockCurrentTarget.innerHTML = "New name";
-			// 	controller.updateName(mockEvent);
+			it("updates the model on enter keypress event only", function () {
+				mockCurrentTarget.innerHTML = "New name";
+				controller.updateName(mockEvent);
 
-			// 	expect(mockCapability.mutate).not.toHaveBeenCalled();
+				expect(mockCapability.mutate).not.toHaveBeenCalled();
 
-			// 	mockEvent.which = 13;
-			// 	controller.updateName(mockEvent);
+				mockEvent.which = 13;
+				controller.updateName(mockEvent);
 
-			// 	expect(mockCapability.mutate).toHaveBeenCalled();
-			// });
+				expect(mockCapability.mutate).toHaveBeenCalled();
+			});
 
-			// it("blurs the field on enter key press", function () {
-			// 	mockEvent.which = 13;
-			// 	controller.updateName(mockEvent);
+			it("blurs the field on enter key press", function () {
+				mockEvent.which = 13;
+				controller.updateName(mockEvent);
 
-			// 	expect(mockEvent.currentTarget.blur).toHaveBeenCalled();
-			// });
+				expect(mockEvent.currentTarget.blur).toHaveBeenCalled();
+			});
 		});
 	}
 );
