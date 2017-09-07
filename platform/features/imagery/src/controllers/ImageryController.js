@@ -185,7 +185,7 @@ define(
             if (this.$scope.imageHistory.length === 0 ||
                 !_.isEqual(this.$scope.imageHistory.slice(-1)[0], datum)) {
 
-                var index = _.sortedIndex(this.$scope.imageHistory, datum, 'utc');
+                var index = _.sortedIndex(this.$scope.imageHistory, datum, this.timeFormat.formatter.key);
                 this.$scope.imageHistory.splice(index, 0, datum);
                 return true;
             }
@@ -276,8 +276,8 @@ define(
          * @param {object} [image] the image object to get url from.
          */
         ImageryController.prototype.setSelectedImage = function (image) {
-            this.imageUrl = image.url;
-            this.time = this.timeFormat.format(image.utc);
+            this.imageUrl = this.getImageUrl(image);
+            this.time = this.getTime(image);
             this.paused(true);
             this.unselectAllImages();
             image.selected = true;
