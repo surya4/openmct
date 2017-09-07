@@ -184,7 +184,7 @@ define(
         ImageryController.prototype.updateHistory = function (datum) {
             if (this.$scope.imageHistory.length === 0 ||
                 !_.isEqual(this.$scope.imageHistory.slice(-1)[0], datum)) {
-                var index = _.sortedIndex(this.$scope.imageHistory, datum, this.timeKey);
+                var index = _.sortedIndex(this.$scope.imageHistory, datum, this.timeFormat.format.bind(this.timeFormat));
                 this.$scope.imageHistory.splice(index, 0, datum);
                 return true;
             }
@@ -205,15 +205,6 @@ define(
                     this.autoScroll = true;
                 }
             }.bind(this));
-        };
-
-        /**
-         *  Force scroll history imagery div to scroll to right.
-         */
-        ImageryController.prototype.scrollToRight = function () {
-            if (this.autoScroll) {
-                this.scrollable[0].scrollLeft = this.scrollable[0].scrollWidth;
-            }
         };
 
         /**
