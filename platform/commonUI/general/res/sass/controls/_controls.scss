@@ -285,12 +285,18 @@ textarea.lg { position: relative; height: 300px; }
     }
 }
 
-.s-input-inline {
+*[contenteditable].s-input-inline,
+input[type="text"].s-input-inline,
+.s-input-inline input[type="text"] {
     // A text input or contenteditable element that indicates edit affordance on hover and looks like an input on focus
     @extend %input-base;
     @include trans-prop-nice((padding, box-shadow), 250ms);
+    background: none;
+    box-shadow: none;
     border: 1px solid transparent;
     min-width: 20px;
+    padding-left: 0;
+    padding-right: 0;
     &:hover,
     &:focus {
         padding-left: $inputTextPLeftRight;
