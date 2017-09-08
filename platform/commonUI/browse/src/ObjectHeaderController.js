@@ -32,12 +32,11 @@ define(
          */
         function ObjectHeaderController($scope) {
             this.$scope = $scope;
-            this.$scope.inlineEdit = false;
+            $scope.editing = false;
         }
 
         /**
-         * Handler for the blur and enter/return key press events
-         * to update the object name.
+         * Updates the object name on blur and enter keypress events.
          *
          * @param event the mouse event
          */
@@ -56,7 +55,7 @@ define(
                     });
                 }
 
-                this.$scope.inlineEdit = false;
+                this.$scope.editing = false;
 
                 if (event.which === 13) {
                     event.currentTarget.blur();
@@ -65,10 +64,10 @@ define(
         };
 
         /**
-         * Handler for the click event to mark the filed as inline edit.
+         * Marks the status of the field as editing.
          */
         ObjectHeaderController.prototype.edit = function () {
-            this.$scope.inlineEdit = true;
+            this.$scope.editing = true;
         };
 
         return ObjectHeaderController;
