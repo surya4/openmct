@@ -257,6 +257,7 @@ span[contenteditable].s-inline-edit {
 
 span[contenteditable].s-inline-edit.s-status-editing {
     @include nice-input();
+    border: 1px solid transparent; // Needed to prevent text jumping
     vertical-align: baseline;
     padding: 0 $inputTextPLeftRight;
 }
@@ -314,6 +315,7 @@ textarea.lg { position: relative; height: 300px; }
     select {
         @include appearance(none);
         box-sizing: border-box;
+        &:focus { outline: 0; }
         background: none;
         color: $colorSelectFg;
         cursor: pointer;
