@@ -21,56 +21,56 @@
  *****************************************************************************/
 
 define(
-	[],
-	function () {
+    [],
+    function () {
 
-		/**
-		 * Controller to provide the ability to inline edit an object name.
-		 *
-		 * @constructor
-		 * @memberof platform/commonUI/browse
-		 */
-		function ObjectHeaderController($scope) {
-			this.$scope = $scope;
-			this.$scope.inlineEdit = false;
-		}
+        /**
+         * Controller to provide the ability to inline edit an object name.
+         *
+         * @constructor
+         * @memberof platform/commonUI/browse
+         */
+        function ObjectHeaderController($scope) {
+            this.$scope = $scope;
+            this.$scope.inlineEdit = false;
+        }
 
-		/**
-		 * Handler for the blur and enter/return key press events
-		 * to update the object name.
-		 *
-		 * @param event the mouse event
-		 */
-		ObjectHeaderController.prototype.updateName = function (event) {
-			if (event && (event.type === 'blur' || event.which === 13)) {
-				var name = event.currentTarget.innerHTML;
+        /**
+         * Handler for the blur and enter/return key press events
+         * to update the object name.
+         *
+         * @param event the mouse event
+         */
+        ObjectHeaderController.prototype.updateName = function (event) {
+            if (event && (event.type === 'blur' || event.which === 13)) {
+                var name = event.currentTarget.innerHTML;
 
-				if (name.length === 0) {
-					name = "Unnamed " + this.$scope.domainObject.getCapability("type").typeDef.name;
-					event.currentTarget.innerHTML = name;
-				}
+                if (name.length === 0) {
+                    name = "Unnamed " + this.$scope.domainObject.getCapability("type").typeDef.name;
+                    event.currentTarget.innerHTML = name;
+                }
 
-				if (name !== this.$scope.domainObject.model.name) {
-					this.$scope.domainObject.getCapability('mutation').mutate(function (model) {
-						model.name = name;
-					});
-				}
+                if (name !== this.$scope.domainObject.model.name) {
+                    this.$scope.domainObject.getCapability('mutation').mutate(function (model) {
+                        model.name = name;
+                    });
+                }
 
-				this.$scope.inlineEdit = false;
+                this.$scope.inlineEdit = false;
 
-				if (event.which === 13) {
-					event.currentTarget.blur();
-				}
-			}
-		};
+                if (event.which === 13) {
+                    event.currentTarget.blur();
+                }
+            }
+        };
 
-		/**
-		 * Handler for the click event to mark the filed as inline edit.
-		 */
-		ObjectHeaderController.prototype.edit = function () {
-			this.$scope.inlineEdit = true;
-		};
+        /**
+         * Handler for the click event to mark the filed as inline edit.
+         */
+        ObjectHeaderController.prototype.edit = function () {
+            this.$scope.inlineEdit = true;
+        };
 
-		return ObjectHeaderController;
-	}
+        return ObjectHeaderController;
+    }
 );

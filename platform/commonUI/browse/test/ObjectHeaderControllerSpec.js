@@ -21,86 +21,86 @@
  *****************************************************************************/
 
 define(
-	["../src/ObjectHeaderController"],
-	function (ObjectHeaderController) {
+    ["../src/ObjectHeaderController"],
+    function (ObjectHeaderController) {
 
-		describe("The object header controller", function () {
-			var mockScope,
-				mockDomainObject,
-				mockCapability,
-				mockEvent,
-				mockCurrentTarget,
-				controller;
+        describe("The object header controller", function () {
+            var mockScope,
+                mockDomainObject,
+                mockCapability,
+                mockEvent,
+                mockCurrentTarget,
+                controller;
 
-			function getModel() {
-				return {
-					name: "Test name"
-				};
-			}
+            function getModel() {
+                return {
+                    name: "Test name"
+                };
+            }
 
-			beforeEach(function () {
-				mockCapability = jasmine.createSpyObj("capability", ["mutate", "typeDef"]);
-				mockCapability.typeDef.name = "";
+            beforeEach(function () {
+                mockCapability = jasmine.createSpyObj("capability", ["mutate", "typeDef"]);
+                mockCapability.typeDef.name = "";
 
-				mockDomainObject = jasmine.createSpyObj("domainObject", ["getCapability", "model"]);
-				mockDomainObject.model = getModel();
-				mockDomainObject.getCapability.andReturn(mockCapability);
+                mockDomainObject = jasmine.createSpyObj("domainObject", ["getCapability", "model"]);
+                mockDomainObject.model = getModel();
+                mockDomainObject.getCapability.andReturn(mockCapability);
 
-				mockScope = jasmine.createSpyObj("$scope", [""]);
-				mockScope.domainObject = mockDomainObject;
+                mockScope = jasmine.createSpyObj("$scope", [""]);
+                mockScope.domainObject = mockDomainObject;
 
-				mockCurrentTarget = jasmine.createSpyObj("currentTarget", ["blur", "innerHTML"]);
-				mockCurrentTarget.blur.andReturn({ blur: function () {} });				
+                mockCurrentTarget = jasmine.createSpyObj("currentTarget", ["blur", "innerHTML"]);
+                mockCurrentTarget.blur.andReturn({ blur: function () {} });
 
-				mockEvent = jasmine.createSpyObj('event', ["which", "type"]);
-				mockEvent.currentTarget = mockCurrentTarget;
+                mockEvent = jasmine.createSpyObj('event', ["which", "type"]);
+                mockEvent.currentTarget = mockCurrentTarget;
 
-				controller = new ObjectHeaderController(mockScope);
-			});
+                controller = new ObjectHeaderController(mockScope);
+            });
 
-			it("updates the model with new name on blur", function () {
-				mockEvent.type = "blur";
-				mockCurrentTarget.innerHTML = "New name";
-				controller.updateName(mockEvent);
+            it("updates the model with new name on blur", function () {
+                mockEvent.type = "blur";
+                mockCurrentTarget.innerHTML = "New name";
+                controller.updateName(mockEvent);
 
-				expect(mockCapability.mutate).toHaveBeenCalled();
-			});
+                expect(mockCapability.mutate).toHaveBeenCalled();
+            });
 
-			it("updates the model with a default for blank names", function () {
-				mockEvent.type = "blur";
-				mockCurrentTarget.innerHTML = "";
-				controller.updateName(mockEvent);
+            it("updates the model with a default for blank names", function () {
+                mockEvent.type = "blur";
+                mockCurrentTarget.innerHTML = "";
+                controller.updateName(mockEvent);
 
-				expect(mockCurrentTarget.innerHTML.length).not.toEqual(0);
-				expect(mockCapability.mutate).toHaveBeenCalled();
-			});
+                expect(mockCurrentTarget.innerHTML.length).not.toEqual(0);
+                expect(mockCapability.mutate).toHaveBeenCalled();
+            });
 
-			it("does not update the model if the same name", function () {
-				mockEvent.type = "blur";
-				mockCurrentTarget.innerHTML = getModel().name;
-				controller.updateName(mockEvent);
+            it("does not update the model if the same name", function () {
+                mockEvent.type = "blur";
+                mockCurrentTarget.innerHTML = getModel().name;
+                controller.updateName(mockEvent);
 
-				expect(mockCapability.mutate).not.toHaveBeenCalled();
-			});
+                expect(mockCapability.mutate).not.toHaveBeenCalled();
+            });
 
-			it("updates the model on enter keypress event only", function () {
-				mockCurrentTarget.innerHTML = "New name";
-				controller.updateName(mockEvent);
+            it("updates the model on enter keypress event only", function () {
+                mockCurrentTarget.innerHTML = "New name";
+                controller.updateName(mockEvent);
 
-				expect(mockCapability.mutate).not.toHaveBeenCalled();
+                expect(mockCapability.mutate).not.toHaveBeenCalled();
 
-				mockEvent.which = 13;
-				controller.updateName(mockEvent);
+                mockEvent.which = 13;
+                controller.updateName(mockEvent);
 
-				expect(mockCapability.mutate).toHaveBeenCalled();
-			});
+                expect(mockCapability.mutate).toHaveBeenCalled();
+            });
 
-			it("blurs the field on enter key press", function () {
-				mockEvent.which = 13;
-				controller.updateName(mockEvent);
+            it("blurs the field on enter key press", function () {
+                mockEvent.which = 13;
+                controller.updateName(mockEvent);
 
-				expect(mockEvent.currentTarget.blur).toHaveBeenCalled();
-			});
-		});
-	}
+                expect(mockEvent.currentTarget.blur).toHaveBeenCalled();
+            });
+        });
+    }
 );
