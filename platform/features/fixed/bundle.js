@@ -123,14 +123,6 @@ define([
                                         "control": "color"
                                     },
                                     {
-                                        "property": "color",
-                                        "cssClass": "icon-T",
-                                        "title": "Text color",
-                                        "description": "Set text color",
-                                        "mandatory": true,
-                                        "control": "color"
-                                    },
-                                    {
                                         "property": "url",
                                         "cssClass": "icon-image",
                                         "control": "dialog-button",
@@ -145,6 +137,23 @@ define([
                                     }
                                 ]
                             },
+                                "items": [
+                                    {
+                                        "property": "color",
+                                        "cssClass": "icon-T",
+                                        "title": "Text color",
+                                        "description": "Set text color",
+                                        "mandatory": true,
+                                        "control": "color"
+                                    },
+                                    {
+                                        "property": "size",
+                                        "title": "Text size",
+                                        "description": "Set text size",
+                                        "control": "select"
+                                    }
+                                ]
+                            },    
                             {
                                 "items": [
                                     {
